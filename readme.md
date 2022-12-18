@@ -11,15 +11,15 @@ You must use ** Python3 **.
 
 # Installation
 ```
-erkan@ubuntu:~$ git clone https://github.com/erkansirin78/data-generator.git
+git clone https://github.com/furkancets/data-generator.git
 
-erkan@ubuntu:~$ python3 -m pip install virtualenv
+python3 -m pip install virtualenv
 
-erkan@ubuntu:~$ cd data-generator/
+cd data-generator/
 
-erkan@ubuntu:~/data-generator$ python3 -m virtualenv datagen
+virtualenv -p /opt/homebrew/bin/python3.10 kafka-env
 
-erkan@ubuntu:~/data-generator$ source datagen/bin/activate
+source kafka-env/bin/activate
 
-(datagen) erkan@ubuntu:~/data-generator$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```

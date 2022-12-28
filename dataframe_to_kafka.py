@@ -42,6 +42,7 @@ class DataFrameToKafka:
         except:
             print("No Broker available")
 
+
     def turn_df_to_str(self, df):
         """
         # puts all columns into one as string. Index -1 will be all columns

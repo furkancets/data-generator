@@ -3,6 +3,7 @@ import pandas as pd
 from kafka import KafkaProducer
 import time
 import argparse
+import json
 """
 Example:
 python dataframe_to_kafka.py -t office-input \
@@ -83,6 +84,7 @@ class DataFrameToKafka:
 
     # Produce a pandas dataframe to kafka
     def df_to_kafka(self):
+        xx = self.df.to_json(orient='index')
 
         sayac = 0
         repeat_counter = 0
@@ -93,11 +95,20 @@ class DataFrameToKafka:
 
                 if self.key_index == 1000:
                     self.producer.send(self.topic, key=str(index).encode(), value=row[-1].encode())
+                    #self.producer.send(self.topic,  value=row.to_json())
                     # row[-1] corresponds to all columns which already put in one column named value
                     # If  -k or --key_index not used pandas df index will be sent to kafka as key
                 else:
                     self.producer.send(self.topic, key=str(row[self.key_index]).encode(), value=row[-1].encode())
                     # if -k or --key_index used the column spesified in this option will be sent to kafka as key
+                #msg = row.to_json()
+                msg_dict = row.to_dict()
+                #msg_json = json.dumps(msg_dict,indent=5)
+                producer = KafkaProducer(
+                    bootstrap_servers='127.0.0.1:29092',
+                    value_serializer=lambda v: json.dumps(v).encode('utf-8')
+                )
+                producer.send(topic= self.topic, key = str(index).encode(), value=msg_dict)
                 self.producer.flush()
                 time.sleep(self.row_sleep_time)
                 sayac = sayac + 1
